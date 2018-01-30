@@ -2,7 +2,7 @@
 	xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" displayBlock="true" xmlns="sap.m">
 	<App>
 		<pages>
-			<Page title="{i18n>title}" showHeader="false">
+			<Page title="{i18n>title}" showHeader="false" class="sapUiSizeCompact">
 				<content>
 					<HBox width="100%" id="H_PLANT" alignContent="Start" alignItems="Center">
 						<items>
@@ -36,7 +36,7 @@
 					</HBox>
 					<!--<Button text="{i18n>clear_label}" icon="sap-icon://undo" tooltip="Recept selected items" press="BackInit" id="Back" type="Emphasized"
 						width="100px" visible="false"/>-->
-					<ScrollContainer horizontal="true" vertical="true" focusable="true" height="420px">
+					<ScrollContainer horizontal="true" vertical="true" focusable="true" height="460px">
 						<!--<Table id="table1" items="{itemModel>/items}" growing="true" growingThreshold="4" selectionMode="None" visibleRowCount="10" ariaLabelledBy="title" width="100%" visible="false" class="tableItems">-->
 						<Table id="table1" items="{itemModel>/items}" growing="true" growingThreshold="10" ariaLabelledBy="title" width="100%" visible="false"
 							class="tableItems">

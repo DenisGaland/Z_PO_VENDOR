@@ -33,6 +33,7 @@ sap.ui.define([
 				var name1 = response.ET001w.Name1;
 				var site = plant + " " + name1;
 				osite.setText(site);
+				BusyIndicator.show();
 				oController.getData();
 				jQuery.sap.delayedCall(500, this, function() {
 					oView.byId("SearchArt").focus();
@@ -41,7 +42,12 @@ sap.ui.define([
 			}, function(error) {
 				BusyIndicator.hide();
 				MessageBox.error(JSON.parse(error.response.body).error.message.value, {
-					title: "Error"
+					title: "Error",
+					onClose: function() {
+						jQuery.sap.delayedCall(500, this, function() {
+							oView.byId("SearchArt").focus();
+						});
+					}
 				});
 			});
 		},
@@ -79,7 +85,12 @@ sap.ui.define([
 						}, function(error) {
 							BusyIndicator.hide();
 							MessageBox.error(JSON.parse(error.response.body).error.message.value, {
-								title: "Error"
+								title: "Error",
+								onClose: function() {
+									jQuery.sap.delayedCall(500, this, function() {
+										oView.byId("SearchArt").focus();
+									});
+								}
 							});
 						});
 					}
@@ -129,7 +140,12 @@ sap.ui.define([
 			}, function(error) {
 				BusyIndicator.hide();
 				MessageBox.error(JSON.parse(error.response.body).error.message.value, {
-					title: "Error"
+					title: "Error",
+					onClose: function() {
+						jQuery.sap.delayedCall(500, this, function() {
+							oView.byId("SearchArt").focus();
+						});
+					}
 				});
 			});
 		},
@@ -138,39 +154,47 @@ sap.ui.define([
 			var oController = this;
 			var oView = this.getView();
 			var material = oView.byId("SearchArt").getValue();
-			var URL = "/sap/opu/odata/sap/ZCHECK_VALUE_SCAN_SRV/";
-			var OData = new ODataModel(URL, true);
-			var query = "/MessageSet(PValue='0202" + material + "')";
-			debugger;
-			BusyIndicator.show();
-			OData.read(query, null, null, true, function(response) {
-				BusyIndicator.hide();
-				if (response.EMessage !== "" && response.EZtype === "E") {
-					var path = $.sap.getModulePath("Press_Shop_Fiori10Z_PO_VENDOR", "/audio");
-					var aud = new Audio(path + "/MOREINFO.png");
-					aud.play();
-					oView.byId("SearchArt").setValue("");
-					var infoMsg = oView.getModel("i18n").getResourceBundle().getText("scan_a_valid_material");
-					MessageBox.show(infoMsg, {
-						icon: MessageBox.Icon.INFORMATION,
+			if (material !== null && oEvent.mParameters.clearButtonPressed === false && oEvent.mParameters.refreshButtonPressed === false) {
+				var URL = "/sap/opu/odata/sap/ZCHECK_VALUE_SCAN_SRV/";
+				var OData = new ODataModel(URL, true);
+				//var query = "/MessageSet(PValue='0202" + material + "')";
+				var query = "/MessageSet(PValue='0299" + material + "')";
+				oView.byId("SearchArt").setValue("");
+				debugger;
+				BusyIndicator.show();
+				OData.read(query, null, null, true, function(response) {
+					if (response.EMessage !== "" && response.EZtype === "E") {
+						BusyIndicator.hide();
+						var path = $.sap.getModulePath("Press_Shop_Fiori10Z_PO_VENDOR", "/audio");
+						var aud = new Audio(path + "/MOREINFO.png");
+						aud.play();
+						//var infoMsg = oView.getModel("i18n").getResourceBundle().getText("scan_a_valid_material");
+						MessageBox.show(response.EMessage, {
+							icon: MessageBox.Icon.INFORMATION,
+							onClose: function() {
+								jQuery.sap.delayedCall(500, this, function() {
+									oView.byId("SearchArt").focus();
+								});
+							}
+						});
+					} else {
+						oController.getData(material);
+						jQuery.sap.delayedCall(500, this, function() {
+							oView.byId("SearchArt").focus();
+						});
+					}
+				}, function(error) {
+					BusyIndicator.hide();
+					MessageBox.error(JSON.parse(error.response.body).error.message.value, {
+						title: "Error",
 						onClose: function() {
 							jQuery.sap.delayedCall(500, this, function() {
 								oView.byId("SearchArt").focus();
 							});
 						}
 					});
-				} else {
-					jQuery.sap.delayedCall(500, this, function() {
-						oView.byId("SearchArt").focus();
-					});
-					oController.getData(material);
-				}
-			}, function(error) {
-				BusyIndicator.hide();
-				MessageBox.error(JSON.parse(error.response.body).error.message.value, {
-					title: "Error"
 				});
-			});
+			}
 		},
 
 		/*getData: function(material) {
@@ -224,23 +248,21 @@ sap.ui.define([
 			});
 		}*/
 
-		getData: function(material,from) {
+		getData: function(material, from) {
 			var oView = this.getView();
 			var oTable = oView.byId("table1");
 			var searchString = null;
 			if (material == null) {
 				searchString = "A" + "/" + "06";
 			} else {
-				if (from == null){
-					searchString = "A" + material + "/" + "06";	
+				if (from == null) {
+					searchString = "A" + material + "/" + "06";
 				} else {
 					searchString = "M/" + material + "/" + "06/" + from;
 				}
 			}
 			var URL = "/sap/opu/odata/sap/ZPREPARE_FLUX_SRV/ItemsSet?$filter=Zfilter " + "%20eq%20" + "%27" + searchString + "%27&$format=json";
-			oView.byId("SearchArt").setValue("");
 			debugger;
-			BusyIndicator.show();
 			OData.read(URL, function(response) {
 				BusyIndicator.hide();
 				var newArray = response.results;
@@ -268,19 +290,26 @@ sap.ui.define([
 			}, function(error) {
 				BusyIndicator.hide();
 				MessageBox.error(JSON.parse(error.response.body).error.message.value, {
-					title: "Error"
+					title: "Error",
+					onClose: function() {
+						jQuery.sap.delayedCall(500, this, function() {
+							oView.byId("SearchArt").focus();
+						});
+					}
 				});
 			});
 		},
-		
+
 		update: function(evt) {
 			var oView = this.getView();
 			var oArticle_input = oView.byId("SearchArt");
+			oView.byId("SearchArt").setValue("");
 			var id = evt.mParameters.id;
 			var number = evt.mParameters.selectedItem.getText();
 			id = id.replace("oSelect", "gtin");
 			var gtin = oView.byId(id).getText();
 			if (!isNaN(number) && number > 0) {
+				BusyIndicator.show();
 				this.getData(gtin, number);
 				jQuery.sap.delayedCall(500, this, function() {
 					oArticle_input.focus();
