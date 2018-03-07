@@ -1,15 +1,18 @@
-<mvc:View controllerName="Press_Shop_Fiori10Z_PO_VENDOR.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" displayBlock="true" xmlns="sap.m">
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns="sap.m"
+	controllerName="Press_Shop_Fiori10Z_PO_VENDOR.controller.View1" displayBlock="true"
+	xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<App>
 		<pages>
-			<Page title="{i18n>title}" showHeader="false" class="sapUiSizeCompact">
+			<Page title="{i18n>title}" showHeader="false" class="sapUiSizeCompact" binding="{/S_T001WSet(Type='')}">
 				<content>
-					<HBox width="100%" id="H_PLANT" alignContent="Start" alignItems="Center">
-						<items>
-							<sap.ui.core:Icon src="sap-icon://home" size="2em" xmlns:sap.ui.core="sap.ui.core" id="__icon0"/>
-							<Label text="Label" width="100%" id="__PLANT" design="Bold"/>
-							<HBox width="10%" id="Space6" alignContent="Start" alignItems="Center"></HBox>
-							<HBox width="100%" id="TYPEFLUX" alignContent="Start" alignItems="Center" visible="false">
+					<!--<HBox width="100%" id="H_PLANT" alignContent="Start" alignItems="Center" >
+						<items>-->
+					<!--<sap.ui.core:Icon src="sap-icon://home" size="2em" xmlns:sap.ui.core="sap.ui.core" id="__icon0"/>
+					<m:Label text="{GETPLANT>EPlant} {GETPLANT>ET001w/Name1}" design="Bold"/>-->
+					<sap.ui.core:Icon xmlns:sap.ui.core="sap.ui.core" src="sap-icon://home" size="2em" id="__icon0"/>
+					<Label design="Bold" text="{EPlant} {ET001w/Name1}"/>
+					<!--<HBox width="10%" id="Space6" alignContent="Start" alignItems="Center"></HBox>-->
+					<!--<HBox width="100%" id="TYPEFLUX" alignContent="Start" alignItems="Center" visible="false">
 								<items>
 									<HBox width="1%" id="Space5" alignContent="Start" alignItems="Center"></HBox>
 									<sap.ui.core:Icon src="sap-icon://supplier" size="2em" xmlns:sap.ui.core="sap.ui.core" id="__icon2"/>
@@ -17,9 +20,9 @@
 									<Label text="" width="100%" id="TYPE" design="Bold"/>
 									<Label text="" width="100%" id="TYPECODE" visible="false"/>
 								</items>
-							</HBox>
-						</items>
-					</HBox>
+							</HBox>-->
+					<!--</items>
+					</HBox>-->
 					<HBox width="100%" id="Article" alignContent="Start" alignItems="Center" visible="true">
 						<items>
 							<Label text="{i18n>mat}" width="100%" id="__label0_copy" design="Bold" textAlign="Center"/>
@@ -57,8 +60,8 @@
 							<items>
 								<ColumnListItem>
 									<cells>
-										<Text text="{itemModel>Gtin}"  id="gtin"/>
-										<Text text="{itemModel>maktx}"/>
+										<Text text="{itemModel>Gtin}" id="gtin" class="smalltext"/>
+										<Text text="{itemModel>maktx}" class="smalltext"/>
 										<!--<Text text="{itemModel>Menge}" class="bold"/>-->
 										<Select id="oSelect" maxWidth="5.5rem" autoAdjustWidth="true" selectedKey="{itemModel>Menge}" forceSelection="false" change="update">
 											<core:Item key="1.000" text="1"/>

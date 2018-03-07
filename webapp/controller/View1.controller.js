@@ -1,6 +1,5 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"../TABLE/TableExampleUtils",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
 	"sap/ui/model/json/JSONModel",
@@ -9,7 +8,7 @@ sap.ui.define([
 	"sap/ui/core/BusyIndicator",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator"
-], function(Controller, TableExampleUtils, MessageToast, MessageBox, JSONModel, ODataModel, ResourceModel, BusyIndicator, Filter,
+], function(Controller, MessageToast, MessageBox, JSONModel, ODataModel, ResourceModel, BusyIndicator, Filter,
 	FilterOperator) {
 	"use strict";
 	return Controller.extend("Press_Shop_Fiori10Z_PO_VENDOR.controller.View1", {
@@ -21,7 +20,8 @@ sap.ui.define([
 				bundleName: "Press_Shop_Fiori10Z_PO_VENDOR.i18n.i18n" //,
 			});
 			oView.setModel(i18nModel, "i18n");
-			var osite = oView.byId("__PLANT");
+			oController.getData();
+			/*var osite = oView.byId("__PLANT");
 			var URL = "/sap/opu/odata/sap/ZGET_PLANT_SRV/";
 			var OData = new ODataModel(URL, true);
 			var query = "/S_T001WSet(Type='')";
@@ -49,7 +49,7 @@ sap.ui.define([
 						});
 					}
 				});
-			});
+			});*/
 		},
 
 		ClearBox: function(oEvent) {
